@@ -109,12 +109,15 @@ class Piece {
         else if (direction ==="right") turns = 1;
         else return;
 
+        let pieceOld = this.piece;
+
         for (let i = 0; i < turns; i++) {
             rotated = [
                 [this.piece[2][0], this.piece[1][0], this.piece[0][0]],
                 [this.piece[2][1], this.piece[1][1], this.piece[0][1]],
                 [this.piece[2][2], this.piece[1][2], this.piece[0][2]]
             ]
+
             this.piece = rotated;
         }
 
@@ -153,6 +156,7 @@ class Piece {
 
         this.updateBlocks();
 
+
         /** Check whether the piece has been moved sideways by rotating */
         if (this.sideShifted === 1 && this.getFreeMove(-1, 0, deadBlocks)){
             this.x -= this.blockSize;
@@ -180,7 +184,15 @@ class Piece {
 
         }
 
-        //this.updateBlocks();
+        /** Check that new position doesn't collide with dead blocks */
+
+        if (!this.getFreeMove(0,0,deadBlocks)) {
+            // Collision detected! Turn back the rotation!
+            this.piece = pieceOld;
+            this.updateBlocks();
+            return;
+        }
+
     }
 
 

@@ -1,4 +1,5 @@
 import PieceL from './piece.js';
+import PieceFactory from "./piecefactory.js";
 
 export default class Game {
     constructor(ctx, gameWidth, gameHeight) {
@@ -8,6 +9,7 @@ export default class Game {
         this.isRunning = false;
         this.currentPiece = '';
         this.deadBlocks = [];
+        this.pieceFactory = new PieceFactory(this.gameWidth, this.gameHeight);
 
     }
 
@@ -27,7 +29,8 @@ export default class Game {
         if(!this.isRunning) return;
 
         if (!this.currentPiece) {
-            this.currentPiece = new PieceL(this.gameWidth, this.gameHeight);
+            //this.currentPiece = new PieceL(this.gameWidth, this.gameHeight);
+            this.currentPiece = this.pieceFactory.createRndBlock();
         } else {
             this.currentPiece.update(input.pressedKeys, timeStamp, this.deadBlocks);
             if (!this.currentPiece.alive) {

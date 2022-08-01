@@ -29,6 +29,4 @@ export default class Block {
         return false;
     }
 
-
-
 }

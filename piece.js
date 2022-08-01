@@ -123,7 +123,6 @@ class Piece {
 
         /** Move all blocks to the left inside the piece if there's free space */
         if (!this.piece[0][0] && !this.piece[1][0] && !this.piece[2][0]) {
-            console.log("moving left");
             this.piece[0][0] = this.piece[0][1];
             this.piece[1][0] = this.piece[1][1];
             this.piece[2][0] = this.piece[2][1];
@@ -248,11 +247,9 @@ class Piece {
     }
 }
 
-class PieceL extends Piece {
+export default class PieceL extends Piece {
     constructor(gameWidth, gameHeight) {
         super(gameWidth, gameHeight);
-
-        // Each piece consist of a 3x3 box
 
         this.piece = [
             [1,0,0],
@@ -261,12 +258,65 @@ class PieceL extends Piece {
         ]
 
         super.createBlocks(this.piece);
-
     }
-
-
-
-
 }
 
-export default PieceL;
+export class PieceL2 extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [
+            [0,1,0],
+            [0,1,0],
+            [1,1,0]
+        ]
+
+        super.createBlocks(this.piece);
+    }
+}
+
+export class PieceBox extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [
+            [1,1,0],
+            [1,1,0],
+            [0,0,0]
+        ]
+
+        super.createBlocks(this.piece);
+    }
+}
+
+export class PieceT extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [
+            [0,1,0],
+            [1,1,1],
+            [0,0,0]
+        ]
+
+        super.createBlocks(this.piece);
+    }
+}
+
+export class PieceI extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [
+            [1,0,0],
+            [1,0,0],
+            [0,0,0],
+            [1,0,0]
+        ]
+
+        super.createBlocks(this.piece);
+    }
+}
+
+
+//export {Piece, PieceL2};

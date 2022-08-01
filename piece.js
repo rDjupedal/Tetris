@@ -303,6 +303,35 @@ export class PieceT extends Piece {
     }
 }
 
+export class PieceS extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [
+            [1,0,0],
+            [1,1,0],
+            [0,1,0],
+        ]
+
+        super.createBlocks(this.piece);
+    }
+}
+
+export class PieceS2 extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [
+            [0,1,0],
+            [1,1,0],
+            [1,0,0],
+        ]
+
+        super.createBlocks(this.piece);
+    }
+}
+
+
 export class PieceI extends Piece {
     constructor(gameWidth, gameHeight) {
         super(gameWidth, gameHeight);

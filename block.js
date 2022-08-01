@@ -18,13 +18,13 @@ export default class Block {
     }
 
     checkCollision(block2, offsetX, offsetY) {
-        if (
-            this.x + offsetX + this.size >= block2.x &&
-            this.x + offsetX <= block2.x + block2.size &&
-            this.y + offsetY + this.size >= block2.y &&
-            this.y + offsetY <= block2.y + block2.size ) {
-                return true;
-            }
+        let checkX = this.x + (offsetX + 1) * this.size;
+        let checkY = this.y + (offsetY + 1) * this.size;
+
+        if (    checkX > block2.x && this.x < block2.x + block2.size &&
+                checkY > block2.y && this.y < block2.y + block2.size ) {
+            return true;
+        }
 
         return false;
     }

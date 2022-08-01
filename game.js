@@ -12,20 +12,40 @@ export default class Game {
     }
 
     startStop() {
+        console.log("startstop");
         this.isRunning = !this.isRunning;
+
     }
 
     update(input, timeStamp) {
 
+        if (input.pressedKeys.indexOf(' ') !== -1){
+            input.pressedKeys.splice(input.pressedKeys.indexOf(' ', 1));
+            this.startStop();
+        }
+
+        if(!this.isRunning) return;
+
         if (!this.currentPiece) {
             this.currentPiece = new PieceL(this.gameWidth, this.gameHeight);
-        } else this.currentPiece.update(input.pressedKeys, timeStamp, this.deadBlocks);
+        } else {
+            this.currentPiece.update(input.pressedKeys, timeStamp, this.deadBlocks);
+            if (!this.currentPiece.alive) {
+                for (let i = 0; i < this.currentPiece.blocks.length; i++) {
+                    this.deadBlocks.push(this.currentPiece.blocks[i]);
+                }
+                this.currentPiece = '';
+            }
+        }
 
 
     }
 
     draw(ctx) {
         if (this.currentPiece) this.currentPiece.draw(ctx);
+        this.deadBlocks.forEach(block => {
+            block.draw(ctx);
+        })
     }
 
 

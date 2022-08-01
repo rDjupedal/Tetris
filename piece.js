@@ -13,10 +13,11 @@ class Piece {
         this.blocks = [];
         this.updatedHoriz = 0;
         this.updatedVert = 0;
-        this.vRefreshInterval = 5000;
+        this.vRefreshInterval = 200;
         this.hRefreshInterval = 50;
         this.div = document.getElementById('tempdiv');
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
+        this.alive = true;
 
     }
 
@@ -60,30 +61,39 @@ class Piece {
         return {rows, cols};
     }
 
-    getFreeMove(dir, deadBlocks) {
+    /**
+     * Check whether current piece can freely move offset-steps
+     * @param offsetX
+     * @param offsetY
+     * @param deadBlocks
+     * @returns {boolean}
+     */
+    getFreeMove(offsetX, offsetY, deadBlocks) {
 
         for (let i = 0; i < this.blocks.length; i++) {
 
-            /** Border collision check */
+            /** Horizontal border collision check */
             if (
-                this.blocks[i].x + dir * this.blocks[i].size < 0 ||
-                this.blocks[i].x + (dir + 1) * this.blocks[i].size > this.gameWidth) {
-                    console.log("border collision");
+                this.blocks[i].x + offsetX * this.blocks[i].size < 0 ||
+                this.blocks[i].x + (offsetX + 1) * this.blocks[i].size > this.gameWidth) {
+                    console.log("horizontal border collision");
                     return false;
             }
 
-            //console.log(`block: ${i} has x: ${this.blocks[i].x}`);
+            /** Vertical border collision check */
+            if (this.blocks[i].y + (offsetY + 1) * this.blocks[i].size >= this.gameHeight) {
+                this.alive = false;
+                return false;
+            }
 
             /** Dead blocks collision check */
-            /*
-
             for (let j = 0; j < deadBlocks.length; j++) {
-                if (this.blocks[i].checkCollision(deadBlocks[j])) {
-                    console.log("can NOT move " + dir);
+                console.log("Checking block " + j);
+                if (this.blocks[i].checkCollision(deadBlocks[j], offsetX,offsetY)) {
+                    if (offsetY === 1) this.alive = false;
                     return false;
                 }
             }
-            */
 
         }
 
@@ -111,13 +121,16 @@ class Piece {
 
         this.updateBlocks();
 
+
+
+
         /** Check whether the piece has been moved sideways by rotating */
-        if (this.sideShifted === 1 && this.getFreeMove(-1, deadBlocks)){
+        if (this.sideShifted === 1 && this.getFreeMove(-1, 0, deadBlocks)){
             this.x -= this.blockSize;
             this.sideShifted = 0;
         }
 
-        if (this.sideShifted === -1 && this.getFreeMove(1, deadBlocks)){
+        if (this.sideShifted === -1 && this.getFreeMove(1, 0, deadBlocks)){
             this.x += this.blockSize;
             this.sideShifted = 0;
         }
@@ -144,6 +157,7 @@ class Piece {
 
     update(keys, timeStamp, deadBlocks) {
 
+        if (!this.alive) return;
         this.div.innerText = `x: ${this.x} y: ${this.y}`;
 
         /** Reacting to key inputs */
@@ -154,12 +168,12 @@ class Piece {
             if (key == 'ArrowUp') this.rotate('left', deadBlocks);
 
 
-            if (key == 'ArrowLeft' && this.getFreeMove(-1, deadBlocks)){
+            if (key == 'ArrowLeft' && this.getFreeMove(-1, 0, deadBlocks)){
                 this.x -= this.blockSize;
                 this.sideShifted = 0;
             }
 
-            if (key == 'ArrowRight' && this.getFreeMove(1, deadBlocks)) {
+            if (key == 'ArrowRight' && this.getFreeMove(1, 0, deadBlocks)) {
                 this.x += this.blockSize;
                 this.sideShifted = 0;
             }
@@ -170,18 +184,13 @@ class Piece {
         /** Falling down */
         if (timeStamp - this.updatedVert >= this.vRefreshInterval) {
             this.updatedVert = timeStamp;
-            this.y += this.blockSize;
+
+            if (this.getFreeMove(0,1, deadBlocks)) this.y += this.blockSize;
+
+            this.updateBlocks();
+
         }
 
-        /*
-        this.blocks.forEach(block => {
-            console.log(`${block.x} ${block.y}`);
-        })
-
-         */
-
-        // Check if landed
-        // blocks.forEach... test
     }
 
     draw(ctx) {

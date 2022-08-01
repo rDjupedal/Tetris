@@ -9,7 +9,8 @@ export default class InputHandler {
                 e.key == 'ArrowUp' ||
                 e.key == 'ArrowLeft' ||
                 e.key == 'ArrowRight' ||
-                e.key == 'ArrowDown' )
+                e.key == 'ArrowDown' ||
+                e.key == ' ')
             && (this.pressedKeys.indexOf(e.key) === -1))
                 this.pressedKeys.push(e.key);
         })

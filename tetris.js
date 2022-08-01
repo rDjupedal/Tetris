@@ -1,7 +1,6 @@
 import Game from "./game.js";
 import InputHandler from "./input.js";
 
-const UPDATE_INTERVAL = 1000;
 const gameWidth = 500;
 const gameHeight = 900;
 const canvas = document.getElementById('canvas_id');
@@ -15,15 +14,16 @@ let lastTime = 0;
 let timeSinceUpdate = 0;
 
 function animate(timeStamp) {
+
     let dTime = timeStamp - lastTime;
     lastTime = timeStamp;
 
-    ctx.clearRect(0,0,gameWidth, gameHeight);
+    ctx.clearRect(0, 0, gameWidth, gameHeight);
     game.update(input, timeStamp);
     game.draw(ctx);
+    console.log(game.isRunning);
 
-
-    if (game.isRunning) requestAnimationFrame(animate);
+     requestAnimationFrame(animate);
 }
 
 //game.testPieceRotate();

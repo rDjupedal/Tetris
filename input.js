@@ -4,7 +4,7 @@ export default class InputHandler {
         this.pressedKeys = [];
 
         window.addEventListener('keydown', e => {
-            console.log(e.key);
+
             if ((
                 e.key == 'ArrowUp' ||
                 e.key == 'ArrowLeft' ||

@@ -7,8 +7,6 @@ class Piece {
         this.size = gameWidth / 6;
         this.blockSize = this.size / 3;
         this.x = Math.floor(((this.gameWidth / this.blockSize) / 2)-1) * this.blockSize;
-        //this.y = 0.1 * gameHeight - this.size * 0.5;
-        //this.y = 1 * this.blockSize;
         this.y = 0 - 3 * this.blockSize;
         this.piece = [];
         this.blocks = [];
@@ -89,7 +87,7 @@ class Piece {
 
             /** Dead blocks collision check */
             for (let j = 0; j < deadBlocks.length; j++) {
-                console.log("Checking block " + j);
+
                 if (this.blocks[i].checkCollision(deadBlocks[j], offsetX,offsetY)) {
                     if (offsetY === 1) this.alive = false;
                     return false;
@@ -119,6 +117,39 @@ class Piece {
             ]
             this.piece = rotated;
         }
+
+        /** Move all blocks to the left inside the piece if there's free space */
+        if (!this.piece[0][0] && !this.piece[1][0] && !this.piece[2][0]) {
+            console.log("moving left");
+            this.piece[0][0] = this.piece[0][1];
+            this.piece[1][0] = this.piece[1][1];
+            this.piece[2][0] = this.piece[2][1];
+
+            this.piece[0][1] = this.piece[0][2];
+            this.piece[1][1] = this.piece[1][2];
+            this.piece[2][1] = this.piece[2][2];
+
+            this.piece[0][2] = '';
+            this.piece[1][2] = '';
+            this.piece[2][2] = '';
+        }
+
+        /** Move all blocks up if there's room inside the piece */
+        /*
+        if (!this.piece[0][0] && !this.piece[0][1] && !this.piece[0][2]) {
+            console.log("moving up");
+            for (let row = 0; row < this.piece.length - 1; row++) {
+                for (let col = 0; col < this.piece[row].length; col++) {
+                    this.piece[row][col] = this.piece[row + 1][col];
+                }
+            }
+            this.piece[2][0] = '';
+            this.piece[2][1] = '';
+            this.piece[2][2] = '';
+        }
+
+         */
+
 
         this.updateBlocks();
 
@@ -210,6 +241,7 @@ class PieceL extends Piece {
         super(gameWidth, gameHeight);
 
         // Each piece consist of a 3x3 box
+
         this.piece = [
             [1,0,0],
             [1,0,0],

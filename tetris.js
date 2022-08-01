@@ -21,7 +21,6 @@ function animate(timeStamp) {
     ctx.clearRect(0, 0, gameWidth, gameHeight);
     game.update(input, timeStamp);
     game.draw(ctx);
-    console.log(game.isRunning);
 
      requestAnimationFrame(animate);
 }

@@ -6,7 +6,6 @@ class Piece {
         this.x = gameWidth * 0.5 - this.size * 0.5;
         this.y = 0.1 * gameHeight - this.size * 0.5;
         this.blockSize = this.size / 3;
-        this.rotation = 0;
         this.piece = [];
     }
 
@@ -28,6 +27,13 @@ class Piece {
         }
     }
 
+    update() {
+        this.y += this.blockSize;
+        // Check if landed
+        // blocks.forEach... test
+    }
+
+    /*
     drawBox(ctx, x, y) {
         ctx.fillStyle = '#FF00FF';
         ctx.fillRect(x, y, this.blockSize, this.blockSize);
@@ -35,6 +41,8 @@ class Piece {
         ctx.rect(x, y, this.blockSize, this.blockSize);
         ctx.stroke();
     }
+
+     */
 
     draw(ctx) {
         ctx.save();
@@ -56,7 +64,7 @@ class Piece {
     }
 }
 
-class Square extends Piece {
+class PieceL extends Piece {
     constructor(gameWidth, gameHeight) {
         super(gameWidth, gameHeight);
 
@@ -72,4 +80,4 @@ class Square extends Piece {
 
 }
 
-export default Square;
+export default PieceL;

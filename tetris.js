@@ -1,4 +1,6 @@
-import Square from './piece.js';
+import Game from "./game.js";
+import InputHandler from "./input.js";
+
 
 const gameWidth = 500;
 const gameHeight = 900;
@@ -7,24 +9,17 @@ const ctx = canvas.getContext('2d');
 canvas.width = gameWidth;
 canvas.height = gameHeight;
 
+const game = new Game(ctx, gameWidth, gameHeight);
+const input = new InputHandler(game);
 
-let square = new Square(gameWidth,gameHeight);
+function animate(timeStamp) {
+    ctx.clearRect(0,0,gameWidth, gameHeight);
+    game.update();
+    game.draw(ctx);
+    //console.log(`${timeStamp}`);
+    if (game.isRunning) requestAnimationFrame(animate);
+}
 
-
-square.draw(ctx);
-
-square.y = 150;
-square.rotate('right');
-square.draw(ctx);
-
-square.y = 250;
-square.rotate('right');
-square.draw(ctx);
-
-square.y = 350;
-square.rotate('left');
-square.draw(ctx);
-
-square.y = 450;
-square.rotate('left');
-square.draw(ctx);
+game.testPieceRotate();
+game.startStop();
+//animate(0);

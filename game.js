@@ -33,6 +33,14 @@ export default class Game {
             if (!this.currentPiece.alive) {
                 for (let i = 0; i < this.currentPiece.blocks.length; i++) {
                     this.deadBlocks.push(this.currentPiece.blocks[i]);
+                    // Check for gameover
+                    for (let i = 0; i < this.deadBlocks.length; i++) {
+                        if (this.deadBlocks[i].y <= 0) {
+                            this.gameOver();
+                            return;
+                        }
+                    }
+
                 }
                 this.currentPiece = '';
             }
@@ -48,6 +56,13 @@ export default class Game {
         })
     }
 
+    gameOver() {
+        //this.deadBlocks.splice(0, this.deadBlocks.length);
+        this.deadBlocks = [];
+        this.currentPiece = '';
+        alert('Game over!');
+
+    }
 
     testPieceRotate() {
         let pieceL = new PieceL(this.gameWidth, this.gameHeight);

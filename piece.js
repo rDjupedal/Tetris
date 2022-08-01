@@ -8,13 +8,14 @@ class Piece {
         this.blockSize = this.size / 3;
         this.x = Math.floor(((this.gameWidth / this.blockSize) / 2)-1) * this.blockSize;
         //this.y = 0.1 * gameHeight - this.size * 0.5;
-        this.y = 1 * this.blockSize;
+        //this.y = 1 * this.blockSize;
+        this.y = 0 - 3 * this.blockSize;
         this.piece = [];
         this.blocks = [];
         this.updatedHoriz = 0;
         this.updatedVert = 0;
         this.vRefreshInterval = 200;
-        this.hRefreshInterval = 50;
+        this.hRefreshInterval = 30;
         this.div = document.getElementById('tempdiv');
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;
@@ -121,9 +122,6 @@ class Piece {
 
         this.updateBlocks();
 
-
-
-
         /** Check whether the piece has been moved sideways by rotating */
         if (this.sideShifted === 1 && this.getFreeMove(-1, 0, deadBlocks)){
             this.x -= this.blockSize;
@@ -176,6 +174,10 @@ class Piece {
             if (key == 'ArrowRight' && this.getFreeMove(1, 0, deadBlocks)) {
                 this.x += this.blockSize;
                 this.sideShifted = 0;
+            }
+
+            if (key == 'ArrowDown' && this.getFreeMove(0,1,deadBlocks)) {
+                this.y += this.blockSize;
             }
 
             this.updateBlocks();

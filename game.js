@@ -6,8 +6,8 @@ export default class Game {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.isRunning = false;
-        this.blocks = [];
         this.currentPiece = '';
+        this.deadBlocks = [];
 
     }
 
@@ -15,17 +15,17 @@ export default class Game {
         this.isRunning = !this.isRunning;
     }
 
-    update() {
+    update(input, timeStamp) {
+
         if (!this.currentPiece) {
-            console.log('no current piece');
             this.currentPiece = new PieceL(this.gameWidth, this.gameHeight);
-            //this.pieces.push(new PieceL(this.gameWidth, this.gameHeight));
-        } else this.currentPiece.update();
+        } else this.currentPiece.update(input.pressedKeys, timeStamp, this.deadBlocks);
+
+
     }
 
     draw(ctx) {
         if (this.currentPiece) this.currentPiece.draw(ctx);
-        this.blocks.forEach(piece => {piece.draw(ctx);})
     }
 
 

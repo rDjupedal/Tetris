@@ -11,8 +11,7 @@ export default class PieceFactory {
 
     createRndBlock() {
         let rnd = Math.floor(Math.random() * this.numOfBlocks);
-        console.log(rnd);
-
+        
         switch (rnd) {
             case(0):
                 return new PieceL(this.gameWidth, this.gameHeight);

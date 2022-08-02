@@ -11,7 +11,6 @@ canvas.height = gameHeight;
 const game = new Game(ctx, gameWidth, gameHeight);
 const input = new InputHandler(game);
 let lastTime = 0;
-let timeSinceUpdate = 0;
 
 function animate(timeStamp) {
 

@@ -103,20 +103,47 @@ class Piece {
 
         /** Rotate the array */
         let turns = 0;
-        let rotated = [];
 
-        if (direction === 'left') turns = 3;
-        else if (direction ==="right") turns = 1;
+        /** Initiate an empty array '*/
+        let rotated = [];
+        for (let i = 0; i < this.piece.length; i++) {
+            let row = [];
+            for (let j = 0; j < this.piece[i].length; j++) {
+                row.push('');
+            }
+            rotated.push(row);
+        }
+
+
+        if (direction === "left") turns = 3;
+        else if (direction === "right") turns = 1;
         else return;
 
+        // todo: should make a safe copy of the array, not of references
         let pieceOld = this.piece;
 
+
         for (let i = 0; i < turns; i++) {
+
+            for (let row = 0; row < this.piece.length; row++) {
+                for (let col = 0; col < this.piece[i].length; col++) {
+                    //console.log(`${col} , ${row}`);
+                    let cols = this.piece[i].length;
+                    let c = cols - col - 1;
+                    //console.log(c);
+                    rotated[row][col] = this.piece[c][row];
+                }
+            }
+
+            console.log("after: " + JSON.stringify(rotated));
+            /*
             rotated = [
                 [this.piece[2][0], this.piece[1][0], this.piece[0][0]],
                 [this.piece[2][1], this.piece[1][1], this.piece[0][1]],
                 [this.piece[2][2], this.piece[1][2], this.piece[0][2]]
             ]
+
+             */
 
             this.piece = rotated;
         }
@@ -205,7 +232,7 @@ class Piece {
             this.updatedHoriz = timeStamp;
 
             let key = keys.pop();
-            if (key == 'ArrowUp') this.rotate('left', deadBlocks);
+            if (key == 'ArrowUp') this.rotate('right', deadBlocks);
 
 
             if (key == 'ArrowLeft' && this.getFreeMove(-1, 0, deadBlocks)){
@@ -337,10 +364,10 @@ export class PieceI extends Piece {
         super(gameWidth, gameHeight);
 
         this.piece = [
-            [1,0,0],
-            [1,0,0],
-            [0,0,0],
-            [1,0,0]
+            [1,0,0,0],
+            [1,0,0,0],
+            [1,0,0,0],
+            [1,0,0,0]
         ]
 
         super.createBlocks(this.piece);

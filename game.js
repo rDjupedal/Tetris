@@ -1,5 +1,5 @@
 import PieceL from './piece.js';
-import PieceFactory from "./piecefactory.js";
+import PieceFactory from "./piece.js";
 
 export default class Game {
     constructor(ctx, gameWidth, gameHeight) {

@@ -4,8 +4,10 @@ class Piece {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.size = gameWidth / 6;
-        this.blockSize = this.size / 3;
+
+        //this.size = gameWidth / 6;
+        this.blockSize = gameWidth / 10;
+
         this.x = Math.floor(((this.gameWidth / this.blockSize) / 2)-1) * this.blockSize;
         this.y = 0 - 3 * this.blockSize;
         this.piece = [];
@@ -14,7 +16,7 @@ class Piece {
         this.updatedVert = 0;
         this.vRefreshInterval = 20000;
         this.hRefreshInterval = 30;
-        this.div = document.getElementById('tempdiv');
+
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;
 
@@ -163,7 +165,6 @@ class Piece {
     update(keys, timeStamp, deadBlocks) {
 
         if (!this.alive) return;
-        this.div.innerText = `x: ${this.x} y: ${this.y}`;
 
         /** Reacting to key inputs */
         if (timeStamp - this.updatedHoriz >= this.hRefreshInterval) {
@@ -211,7 +212,7 @@ class Piece {
     draw(ctx) {
         this.blocks.forEach(block => {
             block.draw(ctx);
-            ctx.strokeRect(this.x, this.y, 3 * this.blockSize, 3 * this.blockSize);
+            ctx.strokeRect(this.x, this.y, this.piece.length * this.blockSize, this.piece[0].length * this.blockSize);
 
         })
 

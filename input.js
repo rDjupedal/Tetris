@@ -2,6 +2,7 @@ export default class InputHandler {
     constructor(game) {
         this.game = game;
         this.pressedKeys = [];
+        this.div = document.getElementById('tempdiv');
 
         window.addEventListener('keydown', e => {
 
@@ -14,6 +15,11 @@ export default class InputHandler {
                 e.key == 'd' )
             && (this.pressedKeys.indexOf(e.key) === -1))
                 this.pressedKeys.push(e.key);
+        })
+
+        window.addEventListener('click', e => {
+            this.game.debugMouseClick(e);
+            //this.div.innerText = `X: ${e.x} Y: ${e.y}`;
         })
 
 

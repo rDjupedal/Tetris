@@ -8,7 +8,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = gameWidth;
 canvas.height = gameHeight;
 
-const game = new Game(ctx, gameWidth, gameHeight);
+const game = new Game(ctx, canvas, gameWidth, gameHeight);
 const input = new InputHandler(game);
 let lastTime = 0;
 

@@ -15,6 +15,7 @@ class Piece {
         this.hRefreshInterval = 30;
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;
+        this.drawDebugBorder = false;
     }
 
     createBlocks(piece) {
@@ -61,7 +62,7 @@ class Piece {
 
             /** Vertical border collision check */
             if (this.blocks[i].y + (offsetY + 1) * this.blocks[i].size > this.gameHeight) {
-                this.alive = false;
+                //this.alive = false;
                 return false;
             }
 
@@ -179,8 +180,16 @@ class Piece {
                 this.sideShifted = 0;
             }
 
-            if (key == 'ArrowDown' && this.getFreeMove(0,1,deadBlocks)) {
-                this.y += this.blockSize;
+            // if (key == 'ArrowDown' && this.getFreeMove(0,1,deadBlocks)) {
+            //     this.y += this.blockSize;
+            // }
+
+            if (key == 'ArrowDown') {
+                if (this.getFreeMove(0,1,deadBlocks)) {
+                    this.y += this.blockSize;
+                } else {
+                    this.alive = false;
+                }
             }
 
             if (key == 'd') {
@@ -196,7 +205,11 @@ class Piece {
         if (timeStamp - this.updatedVert >= this.vRefreshInterval) {
             this.updatedVert = timeStamp;
 
-            if (this.getFreeMove(0,1, deadBlocks)) this.y += this.blockSize;
+            if (this.getFreeMove(0,1, deadBlocks)) {
+                this.y += this.blockSize;
+            } else {
+                this.alive = false;
+            }
 
             this.updateBlocks();
 
@@ -207,7 +220,8 @@ class Piece {
     draw(ctx) {
         this.blocks.forEach(block => {
             block.draw(ctx);
-            ctx.strokeRect(this.x, this.y, this.piece.length * this.blockSize, this.piece[0].length * this.blockSize);
+            if (this.drawDebugBorder)
+                ctx.strokeRect(this.x, this.y, this.piece.length * this.blockSize, this.piece[0].length * this.blockSize);
 
         })
 

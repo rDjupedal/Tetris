@@ -22,36 +22,48 @@ export default class Game {
 
     update(input, timeStamp) {
 
-        if (input.pressedKeys.indexOf(' ') !== -1){
-            input.pressedKeys.splice(input.pressedKeys.indexOf(' ', 1));
+        /** Check for p button press (start / stop) todo: remove? */
+        let pauseKey = 'p';
+        if (input.pressedKeys.indexOf(pauseKey) !== -1){
+            input.pressedKeys.splice(input.pressedKeys.indexOf(pauseKey, 1));
             this.startStop();
         }
 
+        /** if paused.. */
         if(!this.isRunning) return;
 
+        /** The piece has just been removed, means it was killed due to impact, check for full rows
+         * and create a new one */
         if (!this.currentPiece) {
             this.checkRows();
             this.currentPiece = this.pieceFactory.createRndBlock();
             this.blockSize = this.currentPiece.blockSize;
+
+        /** The piece is alive */
         } else {
             this.currentPiece.update(input.pressedKeys, timeStamp, this.deadBlocks);
             if (!this.currentPiece.alive) {
+
+                /** Move the blocks from the piece to deadBlocks */
                 for (let i = 0; i < this.currentPiece.blocks.length; i++) {
                     this.deadBlocks.push(this.currentPiece.blocks[i]);
-
-                    /** Check for gameover */
-                    for (let i = 0; i < this.deadBlocks.length; i++) {
-                        if (this.deadBlocks[i].y <= 0) {
-                            this.gameOver();
-                            return;
-                        }
-                    }
-
                 }
+
+                /** Check for gameover */
+                for (let i = 0; i < this.deadBlocks.length; i++) {
+                    if (this.deadBlocks[i].y <= 0) {
+                        this.gameOver();
+                        return;
+                    }
+                }
+
                 this.currentPiece = '';
             }
         }
 
+        /** Check if it is touched down */
+        if (!this.currentPiece.alive)
+            this.audio.play('touchdown');
     }
 
     draw(ctx) {
@@ -130,6 +142,5 @@ export default class Game {
         else if (fullRows > 1) this.audio.play('big_explosion');
 
     }
-
 
 }

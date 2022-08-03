@@ -5,14 +5,15 @@ export default class InputHandler {
         this.div = document.getElementById('tempdiv');
 
         window.addEventListener('keydown', e => {
-
+        // console.log(e.key);
             if ((
                 e.key == 'ArrowUp' ||
                 e.key == 'ArrowLeft' ||
                 e.key == 'ArrowRight' ||
                 e.key == 'ArrowDown' ||
                 e.key == ' ' ||
-                e.key == 'd' )
+                e.key == 'd' ||
+                e.key == 'p')
             && (this.pressedKeys.indexOf(e.key) === -1))
                 this.pressedKeys.push(e.key);
         })

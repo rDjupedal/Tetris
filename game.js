@@ -1,9 +1,8 @@
-import PieceL from './piece.js';
 import PieceFactory from "./piece.js";
+import SoundPlayer from "./soundPlayer.js";
 
 export default class Game {
-    constructor(ctx, canvas, gameWidth, gameHeight) {
-        this.ctx = ctx;
+    constructor(canvas, gameWidth, gameHeight) {
         this.canvas = canvas; // for debug calculating mouse clicks coord
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
@@ -12,11 +11,13 @@ export default class Game {
         this.deadBlocks = [];
         this.pieceFactory = new PieceFactory(this.gameWidth, this.gameHeight);
         this.blockSize = 50; // just a start value, gets overwritten when first piece is created
+        this.audio = new SoundPlayer();
     }
 
     startStop() {
         console.log("startstop");
         this.isRunning = !this.isRunning;
+        if (this.isRunning) this.audio.play("test");
     }
 
     update(input, timeStamp) {
@@ -37,6 +38,7 @@ export default class Game {
             if (!this.currentPiece.alive) {
                 for (let i = 0; i < this.currentPiece.blocks.length; i++) {
                     this.deadBlocks.push(this.currentPiece.blocks[i]);
+
                     /** Check for gameover */
                     for (let i = 0; i < this.deadBlocks.length; i++) {
                         if (this.deadBlocks[i].y <= 0) {
@@ -97,6 +99,7 @@ export default class Game {
     checkRows() {
 
         let rows = Math.floor(this.gameHeight / this.blockSize);
+        let fullRows = 0;
 
         let deadBlocksArray = this.createDeadBlocksArray();
         for (let row = deadBlocksArray.length - 1; row >= 0; row--) {
@@ -106,6 +109,8 @@ export default class Game {
             })
 
             if (fullRow) {
+
+                fullRows++;
 
                 /** Remove blocks from array*/
                 deadBlocksArray[row].forEach(block => {
@@ -120,6 +125,10 @@ export default class Game {
                 }
             }
         }
+
+        if (fullRows === 1) this.audio.play('explosion');
+        else if (fullRows > 1) this.audio.play('big_explosion');
+
     }
 
 

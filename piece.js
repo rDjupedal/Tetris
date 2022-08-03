@@ -11,7 +11,7 @@ class Piece {
         this.blocks = [];
         this.updatedHoriz = 0;
         this.updatedVert = 0;
-        this.vRefreshInterval = 200000;
+        this.vRefreshInterval = 200;
         this.hRefreshInterval = 30;
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;

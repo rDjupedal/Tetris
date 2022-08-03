@@ -8,14 +8,10 @@ const ctx = canvas.getContext('2d');
 canvas.width = gameWidth;
 canvas.height = gameHeight;
 
-const game = new Game(ctx, canvas, gameWidth, gameHeight);
+const game = new Game(canvas, gameWidth, gameHeight);
 const input = new InputHandler(game);
-let lastTime = 0;
 
 function animate(timeStamp) {
-
-    let dTime = timeStamp - lastTime;
-    lastTime = timeStamp;
 
     ctx.clearRect(0, 0, gameWidth, gameHeight);
     game.update(input, timeStamp);
@@ -24,6 +20,5 @@ function animate(timeStamp) {
      requestAnimationFrame(animate);
 }
 
-//game.testPieceRotate();
 game.startStop();
 animate(0);

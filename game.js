@@ -29,6 +29,7 @@ export default class Game {
         if(!this.isRunning) return;
 
         if (!this.currentPiece) {
+            this.checkRows();
             //this.currentPiece = new PieceL(this.gameWidth, this.gameHeight);
             this.currentPiece = this.pieceFactory.createRndBlock();
         } else {
@@ -60,10 +61,17 @@ export default class Game {
     }
 
     gameOver() {
-        //this.deadBlocks.splice(0, this.deadBlocks.length);
         this.deadBlocks = [];
         this.currentPiece = '';
         alert('Game over!');
+
+    }
+
+    checkRows() {
+        console.log("checking rows..");
+
+
+
 
     }
 

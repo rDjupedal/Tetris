@@ -12,7 +12,7 @@ class Piece {
         this.blocks = [];
         this.updatedHoriz = 0;
         this.updatedVert = 0;
-        this.vRefreshInterval = 200;
+        this.vRefreshInterval = 20000;
         this.hRefreshInterval = 30;
         this.div = document.getElementById('tempdiv');
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
@@ -44,22 +44,6 @@ class Piece {
         }
     }
 
-    getArraySize() {
-        let rows = 0;
-        let cols = 0;
-        for (let i = 0; i < this.piece.length; i++) {
-
-            for (let j = 0; j < this.piece[i].length; j++) {
-                if (this.piece[i][j]) {
-                    if (i > rows) rows = i;
-                    if (j > cols) cols = j;
-                }
-            }
-        }
-
-        return {rows, cols};
-    }
-
     /**
      * Check whether current piece can freely move offset-steps
      * @param offsetX
@@ -86,7 +70,6 @@ class Piece {
 
             /** Dead blocks collision check */
             for (let j = 0; j < deadBlocks.length; j++) {
-
                 if (this.blocks[i].checkCollision(deadBlocks[j], offsetX,offsetY)) {
                     if (offsetY === 1) this.alive = false;
                     return false;
@@ -133,249 +116,10 @@ class Piece {
                 }
             }
 
-            /*
-            rotated = [
-                [this.piece[2][0], this.piece[1][0], this.piece[0][0]],
-                [this.piece[2][1], this.piece[1][1], this.piece[0][1]],
-                [this.piece[2][2], this.piece[1][2], this.piece[0][2]]
-            ]
-             */
-
             this.piece = rotated;
         }
 
-        /** Centrera i arrayen */
-        let minRow = this.piece.length;
-        let maxRow=0;
-        let minCol= this.piece[0].length;
-        let maxCol=0;
-
-        for (let row = 0; row < this.piece.length; row++) {
-            for (let col = 0; col < this.piece[row].length; col++) {
-                if (this.piece[row][col]) {
-                    if (row > maxRow) maxRow = row;
-                    if (row < minRow) minRow = row;
-                    if (col > maxCol) maxCol = col;
-                    if (col < minCol) minCol = col;
-                }
-            }
-        }
-
-        let freeLinesAbove = minRow;
-        let freeLinesBelow = this.piece.length - maxRow - 1;
-        let freeLinesLeft = minCol;
-        let freeLinesRight = this.piece[0].length - maxCol - 1;
-
-        console.log(`över: ${freeLinesAbove}  under:${freeLinesBelow}  vänster: ${freeLinesLeft}  höger: ${freeLinesRight}`);
-
-        function move(piece, rowOffset, colOffset) {
-            console.log(`move function row ${rowOffset} col ${colOffset}`);
-
-            if (rowOffset > 0) rowOffset = Math.floor(y)
-            else rowOffset = -Math.abs(Math.floor(rowOffset));
-
-
-            console.log("in: " + piece);
-
-            let rows = piece.length;
-            let cols = piece[0].length;
-
-            /** New empty array */
-            let newArray = [];
-            for (let row = 0; row < rows; row++) {
-                let r = [];
-                for (let col = 0; col < cols; col++) {
-                    r.push(0);
-                }
-                newArray.push(r);
-            }
-
-            let up = false;
-            if (rowOffset < 0) up = true;
-
-            for (let moves = 0; moves < Math.abs(rowOffset); moves++) {
-                //up or down
-                for (let row = 0; row < rows; row++) {
-                    for (let col = 0; col < cols; col++) {
-
-                        let r;
-                        if (up) r = row - 1;
-                        else r = row + 1;
-
-                        if (r < 0 || r >= rows) newArray[row][col] = 0;
-                        else newArray[row][col] = piece[r][col];
-                    }
-                }
-            }
-
-            /*
-            //down
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    let r = row - 1;
-                    if (r < 0 ) newArray[row][col] = 0;
-                    else newArray[row][col] = piece[r][col];
-                }
-            }
-
-            //up
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    let r = row + 1;
-                    if (r >= rows ) newArray[row][col] = 0;
-                    else newArray[row][col] = piece[r][col];
-                }
-            }
-
-             */
-
-
-            /** Create an array bigger than original */
-            /*
-            let tempArray = []
-            for (let row = 0; row < piece.length + 2; row++) {
-                let r = [];
-                for (let col = 0; col < piece[0].length + 2; col++) {
-                    r.push(0);
-                }
-                tempArray.push(r);
-            }
-            console.log(tempArray);
-
-             */
-
-            /** Put the original array inside the new one */
-            /*
-            for (let row = 0; row < tempArray.length; row++) {
-                for (let col = 0; col < tempArray[row].length; col++) {
-
-                    let r = row - 1;
-                    let c = col -1;
-
-                    if (r >= 0 && c >= 0 && r < piece.length && c < piece[0].length) {
-                        tempArray[row][col] = piece[r][c];
-                    }
-                    else tempArray[row][col] = 0;
-                }
-            }
-
-             */
-
-            /** From the bigger array use offsets to pick out what we want */
-            /*
-            let newArray = [];
-            for (let row = 0; row < rows; row++) {
-                let r = [];
-                for (let col = 0; col < cols; col++) {
-                    r.push(0);
-                }
-                newArray.push(r);
-            }
-
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    newArray = tempArray[row + rowOffset][col + colOffset];
-                }
-
-            }
-
-            console.log("new: " + newArray);
-
-             */
-
-            return newArray;
-        }
-
-        // too low
-        if (freeLinesBelow < freeLinesAbove) {
-            let diff = freeLinesAbove - freeLinesBelow;
-            diff = Math.round(diff / 2);
-            //console.log(diff);
-            //this.piece = move(this.piece, 0, diff);
-        }
-
-        // too high
-        if (freeLinesBelow > freeLinesAbove + 1) {
-            let diff = freeLinesBelow - freeLinesAbove;
-            diff = Math.round(diff / 2);
-
-            //this.piece = move(this.piece, 0, diff);
-        }
-
-        /*
-        if (Math.abs(freeLinesBelow - freeLinesAbove) >= 2) {
-            //this.piece = move(this.piece, 0, Math.floor((freeLinesBelow - freeLinesAbove) / 2));
-            this.piece = move(this.piece, 0, (freeLinesBelow - freeLinesAbove) / 2);
-        }
-
-        if (freeLinesBelow < freeLinesAbove) {
-            this.piece = move(this.piece, 0, Math.round((freeLinesBelow-freeLinesAbove) / 2));
-        }
-
-         */
-
-
-        /** Move all blocks to the left inside the piece if there's free space */
-        /*
-        let emptyFirstCol = true;
-
-        while (emptyFirstCol) {
-            emptyFirstCol = true;
-            for (let row = 0; row < this.piece.length; row++) {
-                if (this.piece[row][0]) emptyFirstCol = false;
-            }
-
-            if (emptyFirstCol) {
-                console.log("moving left");
-                for (let row = 0; row < this.piece.length; row++) {
-                    for (let col = 0; col < this.piece[row].length; col++) {
-                        let c = col + 1;
-                        if (c >= this.piece[row].length) this.piece[row][col] = 0;
-                        else this.piece[row][col] = this.piece[row][c];
-                    }
-                }
-            }
-        }
-
-         */
-
-        /*
-
-        if (!this.piece[0][0] && !this.piece[1][0] && !this.piece[2][0]) {
-            this.piece[0][0] = this.piece[0][1];
-            this.piece[1][0] = this.piece[1][1];
-            this.piece[2][0] = this.piece[2][1];
-
-            this.piece[0][1] = this.piece[0][2];
-            this.piece[1][1] = this.piece[1][2];
-            this.piece[2][1] = this.piece[2][2];
-
-            this.piece[0][2] = '';
-            this.piece[1][2] = '';
-            this.piece[2][2] = '';
-        }
-
-         */
-
-        /** Move all blocks up if there's room inside the piece */
-        /*
-        if (!this.piece[0][0] && !this.piece[0][1] && !this.piece[0][2]) {
-            console.log("moving up");
-            for (let row = 0; row < this.piece.length - 1; row++) {
-                for (let col = 0; col < this.piece[row].length; col++) {
-                    this.piece[row][col] = this.piece[row + 1][col];
-                }
-            }
-            this.piece[2][0] = '';
-            this.piece[2][1] = '';
-            this.piece[2][2] = '';
-        }
-
-         */
-
-
         this.updateBlocks();
-
 
         /** Check whether the piece has been moved sideways by rotating */
         if (this.sideShifted === 1 && this.getFreeMove(-1, 0, deadBlocks)){
@@ -395,27 +139,26 @@ class Piece {
                 this.x += this.blockSize;
                 this.sideShifted = 1;
                 //return;
+                this.updateBlocks();
             }
             else if (this.blocks[i].x + this.blocks[i].size > this.gameWidth) {
                 this.x -= this.blockSize;
                 this.sideShifted = -1;
                 //return;
+                this.updateBlocks();
             }
 
         }
 
         /** Check that new position doesn't collide with dead blocks or borders */
-
         if (!this.getFreeMove(0,0,deadBlocks)) {
             // Collision detected! Turn back the rotation!
             console.log("collision");
             this.piece = pieceOld;
             this.updateBlocks();
-            return;
         }
 
     }
-
 
     update(keys, timeStamp, deadBlocks) {
 
@@ -508,9 +251,8 @@ class PieceBox extends Piece {
         super(gameWidth, gameHeight);
 
         this.piece = [
-            [1,1,0],
-            [1,1,0],
-            [0,0,0]
+            [1,1],
+            [1,1]
         ]
 
         super.createBlocks(this.piece);
@@ -564,10 +306,10 @@ class PieceI extends Piece {
         super(gameWidth, gameHeight);
 
         this.piece = [
-            [1,0,0,0],
-            [1,0,0,0],
-            [1,0,0,0],
-            [1,0,0,0]
+            [0,0,1,0],
+            [0,0,1,0],
+            [0,0,1,0],
+            [0,0,1,0]
         ]
 
         super.createBlocks(this.piece);
@@ -584,7 +326,7 @@ export default class PieceFactory {
     createRndBlock() {
         let rnd = Math.floor(Math.random() * this.numOfBlocks);
 
-        rnd = 4;
+        //rnd = 4;
 
         switch (rnd) {
             case(0):

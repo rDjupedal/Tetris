@@ -4,22 +4,17 @@ class Piece {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-
-        //this.size = gameWidth / 6;
         this.blockSize = gameWidth / 10;
-
         this.x = Math.floor(((this.gameWidth / this.blockSize) / 2)-1) * this.blockSize;
         this.y = 0 - 3 * this.blockSize;
         this.piece = [];
         this.blocks = [];
         this.updatedHoriz = 0;
         this.updatedVert = 0;
-        this.vRefreshInterval = 20000;
+        this.vRefreshInterval = 200000;
         this.hRefreshInterval = 30;
-
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;
-
     }
 
     createBlocks(piece) {
@@ -72,7 +67,7 @@ class Piece {
 
             /** Dead blocks collision check */
             for (let j = 0; j < deadBlocks.length; j++) {
-                if (this.blocks[i].checkCollision(deadBlocks[j], offsetX,offsetY)) {
+                if (this.blocks[i].checkCollision(deadBlocks[j], offsetX, offsetY)) {
                     if (offsetY === 1) this.alive = false;
                     return false;
                 }
@@ -317,6 +312,16 @@ class PieceI extends Piece {
     }
 }
 
+class PieceDot extends Piece {
+    constructor(gameWidth, gameHeight) {
+        super(gameWidth, gameHeight);
+
+        this.piece = [[1]];
+
+        super.createBlocks(this.piece);
+    }
+}
+
 export default class PieceFactory {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -328,6 +333,7 @@ export default class PieceFactory {
         let rnd = Math.floor(Math.random() * this.numOfBlocks);
 
         //rnd = 4;
+        //return new PieceDot(this.gameWidth, this.gameHeight);
 
         switch (rnd) {
             case(0):

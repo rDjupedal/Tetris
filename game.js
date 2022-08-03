@@ -17,7 +17,6 @@ export default class Game {
     startStop() {
         console.log("startstop");
         this.isRunning = !this.isRunning;
-
     }
 
     update(input, timeStamp) {
@@ -31,7 +30,6 @@ export default class Game {
 
         if (!this.currentPiece) {
             this.checkRows();
-            //this.currentPiece = new PieceL(this.gameWidth, this.gameHeight);
             this.currentPiece = this.pieceFactory.createRndBlock();
             this.blockSize = this.currentPiece.blockSize;
         } else {
@@ -39,7 +37,7 @@ export default class Game {
             if (!this.currentPiece.alive) {
                 for (let i = 0; i < this.currentPiece.blocks.length; i++) {
                     this.deadBlocks.push(this.currentPiece.blocks[i]);
-                    // Check for gameover
+                    /** Check for gameover */
                     for (let i = 0; i < this.deadBlocks.length; i++) {
                         if (this.deadBlocks[i].y <= 0) {
                             this.gameOver();
@@ -51,7 +49,6 @@ export default class Game {
                 this.currentPiece = '';
             }
         }
-
 
     }
 
@@ -66,12 +63,10 @@ export default class Game {
         this.deadBlocks = [];
         this.currentPiece = '';
         alert('Game over!');
-
     }
 
     debugMouseClick(event) {
         console.log(`click at X: ${event.x - this.canvas.getBoundingClientRect().x} Y: ${event.y - this.canvas.getBoundingClientRect().y}`);
-
     }
 
     createDeadBlocksArray() {
@@ -92,8 +87,7 @@ export default class Game {
         this.deadBlocks.forEach(deadBlock => {
             let colIndex = Math.floor((deadBlock.x + 0.5 * deadBlock.size) / deadBlock.size);
             let rowIndex = Math.floor((deadBlock.y + 0.5 * deadBlock.size) / deadBlock.size);
-            // console.log(rowIndex + "  " + colIndex);
-            console.log(`gameW: ${this.gameWidth} gameH: ${this.gameHeight} rowIndex: ${rowIndex} colIndex: ${colIndex}`);
+            // console.log(`gameW: ${this.gameWidth} gameH: ${this.gameHeight} rowIndex: ${rowIndex} colIndex: ${colIndex}`);
             blocks[rowIndex][colIndex] = deadBlock;
         })
 
@@ -126,76 +120,7 @@ export default class Game {
                 }
             }
         }
-
-        /** pause */
-        /*
-        // Checking from bottom and up
-        for (let row = 0; row < rows; row++) {
-            let y = this.gameHeight - ((0.5 + row) * this.blockSize);
-
-            let fullRow = [];
-            for (let i = 0; i < rows; i++) fullRow.push(0);
-            let col;
-
-            this.deadBlocks.forEach(deadBlock => {
-                if (y >= deadBlock.y && y <= deadBlock + deadBlock.blockSize) {
-                    // found one block
-                    // determine x-position
-                    col = Math.floor((deadBlock.x + deadBlock.blockSize) / deadBlock.blockSize);
-                    fullRow[col] = 1;
-                }
-            })
-
-            console.log(`row ${row}:  ${fullRow}`);
-
-         */
-
-            //let x = (0.5 + col) * this.blockSize;
-
-            /*
-            for (let col = 0; col < cols; col++) {
-                let x = (0.5 + col) * this.blockSize;
-
-                let fullRow = [];
-                for (let i = 0; i < rows; i++) fullRow.push(0);
-
-                this.deadBlocks.forEach(deadBlock => {
-                    if (deadBlock.checkPoint(x, y)) {
-
-
-                    }
-                    console.log(`row ${row} so far full? ${fullRow} Checking x ${x}, y ${y} in deadblock x ${deadBlock.x}, y ${deadBlock.y}` );
-                })
-
-
-                if (fullRow) console.log(`full row: ${row}`);
-            }
-
-             */
-        }
-
-
-
-    testPieceRotate() {
-        let pieceL = new PieceL(this.gameWidth, this.gameHeight);
-
-        pieceL.draw(this.ctx);
-
-        pieceL.y = 150;
-        pieceL.rotate('right');
-        pieceL.draw(this.ctx);
-
-        pieceL.y = 250;
-        pieceL.rotate('right');
-        pieceL.draw(this.ctx);
-
-        pieceL.y = 350;
-        pieceL.rotate('left');
-        pieceL.draw(this.ctx);
-
-        pieceL.y = 450;
-        pieceL.rotate('left');
-        pieceL.draw(this.ctx);
-
     }
+
+
 }

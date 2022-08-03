@@ -18,13 +18,18 @@ class Piece {
         this.drawDebugBorder = false;
     }
 
-    createBlocks(piece) {
+    createBlocks(piece, color) {
         for (let i = 0; i < piece.length; i++) {
 
             for (let j = 0; j < piece[i].length; j++) {
                 if (piece[i][j]) {
                     //console.log(`new block: ${this.x + j * this.blockSize}, ${this.y + i * this.blockSize}`);
-                    this.blocks.push(new Block(this.x + j * this.blockSize, this.y + i * this.blockSize, this.blockSize));
+                    this.blocks.push(
+                        new Block(
+                            this.x + j * this.blockSize,
+                            this.y + i * this.blockSize,
+                            this.blockSize,
+                            color));
                 }
             }
         }
@@ -213,37 +218,6 @@ class Piece {
                     break;
             }
 
-            /*
-
-            if (key == 'ArrowUp') this.rotate('right', deadBlocks);
-
-
-            if (key == 'ArrowLeft' && this.getFreeMove(-1, 0, deadBlocks)){
-                this.x -= this.blockSize;
-                this.sideShifted = 0;
-            }
-
-            if (key == 'ArrowRight' && this.getFreeMove(1, 0, deadBlocks)) {
-                this.x += this.blockSize;
-                this.sideShifted = 0;
-            }
-
-            if (key == 'ArrowDown') {
-                if (this.getFreeMove(0,1,deadBlocks)) {
-                    this.y += this.blockSize;
-                } else {
-                    this.alive = false;
-                }
-            }
-
-            if (key == 'd') {
-                for (let row = 0; row < this.piece.length; row++) {
-                    console.log(this.piece[row]);
-                }
-            }
-
-             */
-
             this.updateBlocks();
         }
 
@@ -284,7 +258,9 @@ class PieceL extends Piece {
             [1,1,0]
         ]
 
-        super.createBlocks(this.piece);
+        this.color = 'orange';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -298,7 +274,9 @@ class PieceL2 extends Piece {
             [1,1,0]
         ]
 
-        super.createBlocks(this.piece);
+        this.color='blue';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -311,7 +289,9 @@ class PieceBox extends Piece {
             [1,1]
         ]
 
-        super.createBlocks(this.piece);
+        this.color = 'yellow';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -325,7 +305,9 @@ class PieceT extends Piece {
             [0,0,0]
         ]
 
-        super.createBlocks(this.piece);
+        this.color = 'purple';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -339,7 +321,9 @@ class PieceS extends Piece {
             [0,1,0],
         ]
 
-        super.createBlocks(this.piece);
+        this.color = 'lightgreen';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -353,7 +337,9 @@ class PieceS2 extends Piece {
             [1,0,0],
         ]
 
-        super.createBlocks(this.piece);
+        this.color = 'red';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -368,7 +354,9 @@ class PieceI extends Piece {
             [0,0,1,0]
         ]
 
-        super.createBlocks(this.piece);
+        this.color = 'lightblue';
+
+        super.createBlocks(this.piece, this.color);
     }
 }
 
@@ -377,8 +365,9 @@ class PieceDot extends Piece {
         super(gameWidth, gameHeight);
 
         this.piece = [[1]];
+        this.color = 'grey';
 
-        super.createBlocks(this.piece);
+        super.createBlocks(this.piece, this.color);
     }
 }
 

@@ -12,6 +12,7 @@ export default class Game {
         this.pieceFactory = new PieceFactory(this.gameWidth, this.gameHeight);
         this.blockSize = 50; // just a start value, gets overwritten when first piece is created
         this.audio = new SoundPlayer();
+        this.score = 0;
     }
 
     startStop() {
@@ -71,6 +72,12 @@ export default class Game {
         this.deadBlocks.forEach(block => {
             block.draw(ctx);
         })
+
+        ctx.font = "50px Arial bold";
+        ctx.fillStyle ="#000000";
+        ctx.textAlign='right';
+        ctx.fillText(`Score ${this.score}`, this.gameWidth - 20, 50);
+
     }
 
     gameOver() {
@@ -110,7 +117,6 @@ export default class Game {
 
     checkRows() {
 
-        let rows = Math.floor(this.gameHeight / this.blockSize);
         let fullRows = 0;
 
         let deadBlocksArray = this.createDeadBlocksArray();
@@ -140,6 +146,21 @@ export default class Game {
 
         if (fullRows === 1) this.audio.play('explosion');
         else if (fullRows > 1) this.audio.play('big_explosion');
+
+        switch(fullRows) {
+            case 1:
+                this.score += 10;
+                break;
+            case 2:
+                this.score += 25;
+                break;
+            case 3:
+                this.score += 50;
+                break;
+            case 4:
+                this.score += 100;
+                break;
+        }
 
     }
 

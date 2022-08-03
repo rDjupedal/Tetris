@@ -1,14 +1,17 @@
 export default class Block {
-    constructor(x, y, size) {
+    constructor(x, y, size, color) {
         this.x = x;
         this.y = y;
         this.size = size;
+        if (!color) this.color = '#FF00FF';
+        else this.color = color;
     }
 
     draw(ctx) {
         ctx.strokeStyle = '#000000';
         ctx.strokeRect(this.x, this.y, this.size, this.size);
-        ctx.fillStyle = '#FF00FF';
+        // ctx.fillStyle = '#FF00FF';
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 

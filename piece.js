@@ -167,6 +167,54 @@ class Piece {
             this.updatedHoriz = timeStamp;
 
             let key = keys.pop();
+
+            switch(key) {
+                case 'ArrowUp':
+                    this.rotate('right', deadBlocks);
+                    break;
+
+                case 'ArrowLeft':
+                    if (this.getFreeMove(-1, 0, deadBlocks)) {
+                        this.x -= this.blockSize;
+                        this.sideShifted = 0;
+                    }
+                    break;
+
+                case 'ArrowRight':
+                    if (this.getFreeMove(1, 0, deadBlocks)) {
+                        this.x += this.blockSize;
+                        this.sideShifted = 0;
+                    }
+                    break;
+
+                case 'ArrowDown':
+                    if (this.getFreeMove(0,1, deadBlocks)) {
+                        this.y += this.blockSize;
+                    } else {
+                        this.alive = false;
+                    }
+                    break;
+
+                case ' ':       // (space) Power down
+                    let a = 0;
+                    while(this.getFreeMove(0,1, deadBlocks)) {
+                        a++;
+                        console.log(a);
+                        this.y += this.blockSize;
+                        this.updateBlocks();
+                    }
+                    this.alive = false;
+                    break;
+
+                case 'd':
+                    for (let row = 0; row < this.piece.length; row++) {
+                        console.log(this.piece[row]);
+                    }
+                    break;
+            }
+
+            /*
+
             if (key == 'ArrowUp') this.rotate('right', deadBlocks);
 
 
@@ -179,10 +227,6 @@ class Piece {
                 this.x += this.blockSize;
                 this.sideShifted = 0;
             }
-
-            // if (key == 'ArrowDown' && this.getFreeMove(0,1,deadBlocks)) {
-            //     this.y += this.blockSize;
-            // }
 
             if (key == 'ArrowDown') {
                 if (this.getFreeMove(0,1,deadBlocks)) {
@@ -197,6 +241,8 @@ class Piece {
                     console.log(this.piece[row]);
                 }
             }
+
+             */
 
             this.updateBlocks();
         }

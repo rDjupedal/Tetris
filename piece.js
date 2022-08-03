@@ -65,7 +65,7 @@ class Piece {
             }
 
             /** Vertical border collision check */
-            if (this.blocks[i].y + (offsetY + 1) * this.blocks[i].size >= this.gameHeight) {
+            if (this.blocks[i].y + (offsetY + 1) * this.blocks[i].size > this.gameHeight) {
                 this.alive = false;
                 return false;
             }

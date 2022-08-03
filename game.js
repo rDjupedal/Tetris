@@ -74,28 +74,107 @@ export default class Game {
 
     }
 
-    checkRows() {
+    createDeadBlocksArray() {
+        /** Create an empty array of all possible deadblock positions */
         let cols = Math.floor(this.gameWidth / this.blockSize);
         let rows = Math.floor(this.gameHeight / this.blockSize);
 
+        let blocks = [];
+        for (let row = 0; row < rows; row++) {
+            let r = []
+            for (let col = 0; col < cols; col++) {
+                r.push(0);
+            }
+            blocks.push(r);
+        }
+
+        /** Populate the array */
+        this.deadBlocks.forEach(deadBlock => {
+            let colIndex = Math.floor((deadBlock.x + 0.5 * deadBlock.size) / deadBlock.size);
+            let rowIndex = Math.floor((deadBlock.y + 0.5 * deadBlock.size) / deadBlock.size);
+            // console.log(rowIndex + "  " + colIndex);
+            console.log(`gameW: ${this.gameWidth} gameH: ${this.gameHeight} rowIndex: ${rowIndex} colIndex: ${colIndex}`);
+            blocks[rowIndex][colIndex] = deadBlock;
+        })
+
+        return blocks;
+    }
+
+    checkRows() {
+
+        let rows = Math.floor(this.gameHeight / this.blockSize);
+
+        let deadBlocksArray = this.createDeadBlocksArray();
+        for (let row = deadBlocksArray.length - 1; row >= 0; row--) {
+            let fullRow = true;
+            deadBlocksArray[row].forEach(block => {
+                if (block == 0) fullRow = false;
+            })
+
+            if (fullRow) {
+
+                /** Remove blocks from array*/
+                deadBlocksArray[row].forEach(block => {
+                    this.deadBlocks.splice(this.deadBlocks.indexOf(block),1);
+                })
+
+                /** Move down the remaining blocks */
+                for (let rowA = row - 1; rowA >= 0; rowA--) {
+                    deadBlocksArray[rowA].forEach(block => {
+                        if(block != 0) block.y += block.size;
+                    })
+                }
+            }
+        }
+
+        /** pause */
+        /*
         // Checking from bottom and up
         for (let row = 0; row < rows; row++) {
-            let y = this.gameHeight - 0.5 * (row + 1) * this.blockSize;
+            let y = this.gameHeight - ((0.5 + row) * this.blockSize);
 
+            let fullRow = [];
+            for (let i = 0; i < rows; i++) fullRow.push(0);
+            let col;
+
+            this.deadBlocks.forEach(deadBlock => {
+                if (y >= deadBlock.y && y <= deadBlock + deadBlock.blockSize) {
+                    // found one block
+                    // determine x-position
+                    col = Math.floor((deadBlock.x + deadBlock.blockSize) / deadBlock.blockSize);
+                    fullRow[col] = 1;
+                }
+            })
+
+            console.log(`row ${row}:  ${fullRow}`);
+
+         */
+
+            //let x = (0.5 + col) * this.blockSize;
+
+            /*
             for (let col = 0; col < cols; col++) {
-                let x = 1.5 * (col + 1) * this.blockSize;
-                let fullRow = true;
+                let x = (0.5 + col) * this.blockSize;
+
+                let fullRow = [];
+                for (let i = 0; i < rows; i++) fullRow.push(0);
+
                 this.deadBlocks.forEach(deadBlock => {
-                    if (!deadBlock.checkPoint(x, y)) fullRow = false;
+                    if (deadBlock.checkPoint(x, y)) {
+
+
+                    }
                     console.log(`row ${row} so far full? ${fullRow} Checking x ${x}, y ${y} in deadblock x ${deadBlock.x}, y ${deadBlock.y}` );
                 })
 
 
                 if (fullRow) console.log(`full row: ${row}`);
             }
+
+             */
         }
 
-    }
+
 
     testPieceRotate() {
         let pieceL = new PieceL(this.gameWidth, this.gameHeight);

@@ -30,6 +30,7 @@ export default class Block {
     }
 
     checkPoint(x, y) {
+        console.log(`${x}, ${y} inside ${this.x}, ${this.y} ?`)
         return (x >= this.x && x <= this.x + this.size &&
             y >= this.y && y <= this.y + this.size);
     }

@@ -15,7 +15,7 @@ class Piece {
         this.hRefreshInterval = 30;
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;
-        this.drawDebugBorder = false;
+        this.drawDebugBorder = true;
     }
 
     createBlocks(piece, color) {
@@ -61,13 +61,11 @@ class Piece {
             /** Horizontal border collision check */
             if (this.blocks[i].x + offsetX * this.blocks[i].size < 0 ||
                 this.blocks[i].x + (offsetX + 1) * this.blocks[i].size > this.gameWidth) {
-                console.log("horizontal border collision");
                 return false;
             }
 
             /** Vertical border collision check */
             if (this.blocks[i].y + (offsetY + 1) * this.blocks[i].size > this.gameHeight) {
-                //this.alive = false;
                 return false;
             }
 
@@ -201,10 +199,7 @@ class Piece {
                     break;
 
                 case ' ':       // (space) Power down
-                    let a = 0;
                     while(this.getFreeMove(0,1, deadBlocks)) {
-                        a++;
-                        console.log(a);
                         this.y += this.blockSize;
                         this.updateBlocks();
                     }
@@ -218,7 +213,7 @@ class Piece {
                     break;
             }
 
-            this.updateBlocks();
+            //this.updateBlocks();
         }
 
         /** Falling down */
@@ -227,14 +222,16 @@ class Piece {
 
             if (this.getFreeMove(0,1, deadBlocks)) {
                 this.y += this.blockSize;
+                //this.updateBlocks();
             } else {
                 this.alive = false;
             }
 
-            this.updateBlocks();
+            //this.updateBlocks();
 
         }
 
+        this.updateBlocks();
     }
 
     draw(ctx) {
@@ -242,7 +239,6 @@ class Piece {
             block.draw(ctx);
             if (this.drawDebugBorder)
                 ctx.strokeRect(this.x, this.y, this.piece.length * this.blockSize, this.piece[0].length * this.blockSize);
-
         })
 
     }
@@ -258,7 +254,7 @@ class PieceL extends Piece {
             [1,1,0]
         ]
 
-        this.color = 'orange';
+        this.color = '#c753c5';
 
         super.createBlocks(this.piece, this.color);
     }
@@ -274,7 +270,7 @@ class PieceL2 extends Piece {
             [1,1,0]
         ]
 
-        this.color='blue';
+        this.color='#3a3af6';
 
         super.createBlocks(this.piece, this.color);
     }
@@ -321,7 +317,7 @@ class PieceS extends Piece {
             [0,1,0],
         ]
 
-        this.color = 'lightgreen';
+        this.color = '#3fa106';
 
         super.createBlocks(this.piece, this.color);
     }
@@ -348,13 +344,13 @@ class PieceI extends Piece {
         super(gameWidth, gameHeight);
 
         this.piece = [
-            [0,0,1,0],
-            [0,0,1,0],
-            [0,0,1,0],
-            [0,0,1,0]
+            [0,1,0,0],
+            [0,1,0,0],
+            [0,1,0,0],
+            [0,1,0,0]
         ]
 
-        this.color = 'lightblue';
+        this.color = '#077db0';
 
         super.createBlocks(this.piece, this.color);
     }

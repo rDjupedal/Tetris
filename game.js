@@ -50,7 +50,7 @@ export default class Game {
                     this.deadBlocks.push(this.currentPiece.blocks[i]);
                 }
 
-                /** Check for gameover */
+                /** Check for game over */
                 for (let i = 0; i < this.deadBlocks.length; i++) {
                     if (this.deadBlocks[i].y <= 0) {
                         this.gameOver();
@@ -62,28 +62,31 @@ export default class Game {
             }
         }
 
-        /** Check if it is touched down */
+        /** Check if it has touched down */
         if (!this.currentPiece.alive)
             this.audio.play('touchdown');
     }
 
     draw(ctx) {
-        if (this.currentPiece) this.currentPiece.draw(ctx);
+        if (this.currentPiece) {
+            this.currentPiece.draw(ctx);
+        }
+
         this.deadBlocks.forEach(block => {
             block.draw(ctx);
         })
 
+        /** Print Highscore */
         ctx.font = "50px Arial bold";
         ctx.fillStyle ="#000000";
         ctx.textAlign='right';
         ctx.fillText(`Score ${this.score}`, this.gameWidth - 20, 50);
-
     }
 
     gameOver() {
         this.deadBlocks = [];
         this.currentPiece = '';
-        alert('Game over!');
+        alert('Game over! Score: ' + this.score);
     }
 
     debugMouseClick(event) {

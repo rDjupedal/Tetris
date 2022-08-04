@@ -12,8 +12,8 @@ const game = new Game(canvas, gameWidth, gameHeight);
 const input = new InputHandler(game);
 
 function animate(timeStamp) {
-
-    ctx.clearRect(0, 0, gameWidth, gameHeight);
+    if (game.isRunning)
+        ctx.clearRect(0, 0, gameWidth, gameHeight);
     game.update(input, timeStamp);
     game.draw(ctx);
 

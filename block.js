@@ -8,11 +8,21 @@ export default class Block {
     }
 
     draw(ctx) {
-        ctx.strokeStyle = '#000000';
-        ctx.strokeRect(this.x, this.y, this.size, this.size);
-        // ctx.fillStyle = '#FF00FF';
+
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.size, this.size);
+
+        // ctx.beginPath();
+        // ctx.moveTo(this.x + 1, this.y + 1);
+        // ctx.lineTo(this.x + this.size - 1, this.y + 1);
+        // ctx.lineTo(this.x + this.size - 1, this.y + this.size - 1);
+        // ctx.lineTo(this.x + 1, this.y + this.size - 1);
+        // ctx.lineTo(this.x + 1, this.y + 1);
+        // ctx.stroke();
+
+
+        ctx.strokeStyle = '#000000';
+        ctx.strokeRect(this.x+1, this.y+1, this.size-1, this.size-1);
     }
 
     update(x, y) {

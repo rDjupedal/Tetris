@@ -15,7 +15,7 @@ class Piece {
         this.hRefreshInterval = 30;
         this.sideShifted = 0;   // Keeps track of if the piece was moved to the side while rotating
         this.alive = true;
-        this.drawDebugBorder = true;
+        this.drawDebugBorder = false;
     }
 
     createBlocks(piece, color) {
